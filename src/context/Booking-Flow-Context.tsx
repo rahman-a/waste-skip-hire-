@@ -18,6 +18,7 @@ import type {
   PlasterBoardPercentageRangeType,
 } from '../schema/booking-flow'
 import type { SkipType } from '../schema/skip'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 // Context interface
 interface BookingFlowContextType {
@@ -72,6 +73,7 @@ interface BookingFlowContextType {
   // Utility functions
   resetForm: () => void
   updateForm: (updates: Partial<BookingFlowType>) => void
+  clearLocalStorage: () => void
 }
 
 // Create context
@@ -85,10 +87,19 @@ interface BookingFlowProviderProps {
 }
 
 export function BookingFlowProvider({ children }: BookingFlowProviderProps) {
-  const [state, dispatch] = useReducer(
-    bookingFlowReducer,
-    initialBookingFlowState
-  )
+  const { getInitialState, clearState, useSyncWithLocalStorage } =
+    useLocalStorage()
+
+  // Load initial state from localStorage or use default
+  const initialState = (): BookingFlowType => {
+    const savedState = getInitialState()
+    return savedState || initialBookingFlowState
+  }
+
+  const [state, dispatch] = useReducer(bookingFlowReducer, initialState())
+
+  // Sync with localStorage whenever state changes
+  useSyncWithLocalStorage(state)
 
   // Step management functions
   const setStep = (step: number) => {
@@ -248,10 +259,15 @@ export function BookingFlowProvider({ children }: BookingFlowProviderProps) {
   // Utility functions
   const resetForm = () => {
     dispatch({ type: BOOKING_FLOW_ACTIONS.RESET_FORM })
+    clearState()
   }
 
   const updateForm = (updates: Partial<BookingFlowType>) => {
     dispatch({ type: BOOKING_FLOW_ACTIONS.UPDATE_FORM, payload: updates })
+  }
+
+  const handleClearLocalStorage = () => {
+    clearState()
   }
 
   const value: BookingFlowContextType = {
@@ -304,6 +320,7 @@ export function BookingFlowProvider({ children }: BookingFlowProviderProps) {
     // Utility
     resetForm,
     updateForm,
+    clearLocalStorage: handleClearLocalStorage,
   }
 
   return (
