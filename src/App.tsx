@@ -1,7 +1,12 @@
+import SkipBookingForm from './components/form'
+import { BookingFlowProvider } from './context/Booking-Flow-Context'
+
 function App() {
   return (
     <div>
-      <h1 className='text-red-600 text-6xl'>Welcome Vite</h1>
+      <BookingFlowProvider>
+        <SkipBookingForm />
+      </BookingFlowProvider>
     </div>
   )
 }

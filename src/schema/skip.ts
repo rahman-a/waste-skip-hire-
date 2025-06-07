@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const skipSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   size: z.number(),
   hire_period_days: z.number(),
   transport_cost: z.number().nullable(),

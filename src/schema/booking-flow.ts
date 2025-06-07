@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import { skipSchema } from './skip'
 
-
 // Address schema
 export const addressSchema = z.object({
   postcode: z.string(),
@@ -41,11 +40,11 @@ export const heavyWastePercentageRangeSchema = z.enum([
   '>20',
 ])
 export const plasterBoardPercentageRangeSchema = z.enum([
-    'none',
-    '<5',
-    '5-10',
-    '>10',
-  ])
+  'none',
+  '<5',
+  '5-10',
+  '>10',
+])
 
 // Main booking flow schema
 export const bookingFlowSchema = z.object({
@@ -54,13 +53,12 @@ export const bookingFlowSchema = z.object({
   selectedCategories: z.array(z.number()).default([]),
   hasHeavyWaste: z.boolean().default(false),
   tonneBags: z.number().default(0),
-  selectedSkip: skipSchema.nullable().default(null),
-  needsPermit: z.boolean().nullable().default(false),
-  permitInfo: permitInfoSchema.nullable().default(null),
+  selectedSkip: skipSchema.nullable(),
+  needsPermit: z.boolean().nullable(),
+  permitInfo: permitInfoSchema.nullable(),
   selectedDate: z
     .union([z.string(), z.date()])
     .nullable()
-    .default(null)
     .transform((val: undefined | null | string | Date) => {
       if (!val) return null
       return val instanceof Date ? val : new Date(val)
@@ -68,7 +66,6 @@ export const bookingFlowSchema = z.object({
   selectedCollectionDate: z
     .union([z.string(), z.date()])
     .nullable()
-    .default(null)
     .transform((val: undefined | null | string | Date) => {
       if (!val) return null
       return val instanceof Date ? val : new Date(val)
@@ -77,20 +74,31 @@ export const bookingFlowSchema = z.object({
   popsCompleted: z.boolean().default(false),
   selectedWasteTypes: z.array(z.string()).default([]),
   heavyWastePercentageRange: heavyWastePercentageRangeSchema.default('none'),
-  plasterboardPercentageRange: plasterBoardPercentageRangeSchema.default('none'),
+  plasterboardPercentageRange:
+    plasterBoardPercentageRangeSchema.default('none'),
 })
 
 // Exported types
 export type AddressType = z.infer<typeof addressSchema>
 export type PermitInfoType = z.infer<typeof permitInfoSchema>
-export type HeavyWastePercentageRangeType = z.infer<typeof heavyWastePercentageRangeSchema>
-export type PlasterBoardPercentageRangeType = z.infer<typeof plasterBoardPercentageRangeSchema>
+export type HeavyWastePercentageRangeType = z.infer<
+  typeof heavyWastePercentageRangeSchema
+>
+export type PlasterBoardPercentageRangeType = z.infer<
+  typeof plasterBoardPercentageRangeSchema
+>
 export type BookingFlowType = z.infer<typeof bookingFlowSchema>
 
 // Helper function to create initial booking flow state
 export const createInitialBookingFlow = (): BookingFlowType => ({
   step: 1,
-  address: null,
+  address: {
+    postcode: 'NR32',
+    city: 'Lowestoft',
+    streetName: '',
+    houseNumber: '',
+    fullAddress: '',
+  },
   selectedCategories: [],
   hasHeavyWaste: false,
   tonneBags: 0,
