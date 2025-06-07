@@ -42,7 +42,9 @@ export default function SkipSizeSelector({ className }: SkipSizeSelectorProps) {
     >
       {/* Content */}
       {isFetching ? (
-        <Loader />
+        <div className='w-full h-screen'>
+          <Loader />
+        </div>
       ) : (
         <div className='grid items-center justify-items-center sm:grid-cols-2 xl:grid-cols-3 gap-10 p-4 sm:p-6'>
           {skips?.length &&
