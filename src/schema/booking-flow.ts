@@ -91,7 +91,7 @@ export type BookingFlowType = z.infer<typeof bookingFlowSchema>
 
 // Helper function to create initial booking flow state
 export const createInitialBookingFlow = (): BookingFlowType => ({
-  step: 1,
+  step: 3,
   address: {
     postcode: 'NR32',
     city: 'Lowestoft',
