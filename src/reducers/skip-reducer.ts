@@ -54,7 +54,7 @@ export function skipReducer(state: SkipState, action: SkipAction): SkipState {
     case SKIP_ACTIONS.UPDATE_SKIP:
       return {
         ...state,
-        skips: state.skips.map(skip => 
+        skips: state.skips.map((skip) =>
           skip.id === action.payload.id ? action.payload : skip
         ),
         error: null,
@@ -62,7 +62,7 @@ export function skipReducer(state: SkipState, action: SkipAction): SkipState {
     case SKIP_ACTIONS.DELETE_SKIP:
       return {
         ...state,
-        skips: state.skips.filter(skip => skip.id !== action.payload),
+        skips: state.skips.filter((skip) => skip.id !== Number(action.payload)),
         error: null,
       }
     case SKIP_ACTIONS.CLEAR_SKIPS:
@@ -74,4 +74,4 @@ export function skipReducer(state: SkipState, action: SkipAction): SkipState {
     default:
       return state
   }
-} 
+}

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import MobileHeader from './mobile-header'
 import MobileSteps from './mobile-steps'
 import DesktopSidebar from './desktop-sidebar'
 import MobileSidebarOverlay from './mobile-sidebar-overlay'
